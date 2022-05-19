@@ -2,5 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/nd035-C2-Web-Services-and-APIs-Exercises-and-Project-Starter" vcs="Git" />
   </component>
 </project>
