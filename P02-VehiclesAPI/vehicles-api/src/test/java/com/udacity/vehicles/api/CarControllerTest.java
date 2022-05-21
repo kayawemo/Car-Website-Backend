@@ -4,11 +4,8 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -22,6 +19,7 @@ import com.udacity.vehicles.domain.car.Details;
 import com.udacity.vehicles.domain.manufacturer.Manufacturer;
 import com.udacity.vehicles.service.CarService;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,6 +71,30 @@ public class CarControllerTest {
         given(carService.findById(any())).willReturn(car);
         given(carService.list()).willReturn(Collections.singletonList(car));
     }
+
+    @Test
+    public void updateCar() throws Exception{
+        /**
+         * TODO: Add a test to check that the `put` method works by calling
+         *   a vehicle by ID. This should utilize the car from `getCar()` below.
+         */
+        Car car = getCar();
+        car.setModifiedAt(LocalDateTime.now());
+        car.setCondition(Condition.NEW);
+        when(carService.save(any(Car.class))).thenReturn(car);
+        mvc.perform(put("/cars/1")
+                        .content(json.write(car).getJson())
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk());
+
+        verify(carService, times(1)).save(any(Car.class));
+
+
+
+    }
+
+
 
     /**
      * Tests for successful creation of new car in the system
